@@ -20,7 +20,7 @@ public class CategoryService {
 
     public CategoryDetail getCategoryById(Long id) {
         Category c = categoryRepository.findById(id).orElse(null);
-        CategoryDetail cd = new CategoryDetail(c, c.getProducts().size());
+        CategoryDetail cd = new CategoryDetail(c.getName(), c.getProducts().size());
         return cd;
     }
 

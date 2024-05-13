@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CategoryDetail {
-    private Category category;
+    private String name;
     private int productCount;
 }
