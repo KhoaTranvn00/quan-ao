@@ -1,7 +1,13 @@
 package com.example.quanlycuahang.api;
 
+import com.example.quanlycuahang.dto.AppointmentDto;
 import com.example.quanlycuahang.entity.Appointment;
+import com.example.quanlycuahang.entity.Category;
+import com.example.quanlycuahang.entity.Customer;
+import com.example.quanlycuahang.entity.Product;
 import com.example.quanlycuahang.repository.AppointmentRepository;
+import com.example.quanlycuahang.repository.CustomerRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +21,10 @@ public class AppointmentController {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping
     public List<Appointment> getAllAppointments() {
@@ -29,7 +39,12 @@ public class AppointmentController {
     }
 
     @PostMapping
-    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment) {
+    public ResponseEntity<Appointment> createAppointment(@RequestBody AppointmentDto appointmentDto) {
+        Appointment appointment = modelMapper.map(appointmentDto, Appointment.class);
+        Customer customer = customerRepository.findById(appointmentDto.getCustomer_id())
+                .orElseThrow(() -> new IllegalArgumentException("Category not found with ID: "));
+
+        appointment.setCustomer(customer);
         Appointment createdAppointment = appointmentRepository.save(appointment);
         return new ResponseEntity<>(createdAppointment, HttpStatus.CREATED);
     }

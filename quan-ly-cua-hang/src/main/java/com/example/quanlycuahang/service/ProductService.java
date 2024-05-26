@@ -43,7 +43,7 @@ public class ProductService {
         Product product = modelMapper.map(productRequest, Product.class);
         Category category = categoryRepository.findById(productRequest.getCategory_id())
                 .orElseThrow(() -> new IllegalArgumentException("Category not found with ID: "));
-
+        product.setCategory(category);
         if (productRepository.existsById(id)) {
             product.setId(id);
             return productRepository.save(product);

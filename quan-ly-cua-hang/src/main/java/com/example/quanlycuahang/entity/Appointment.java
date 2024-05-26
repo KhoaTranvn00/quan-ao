@@ -19,5 +19,6 @@ public class Appointment {
     private String status;
 
     @OneToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 }

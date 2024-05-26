@@ -1,10 +1,11 @@
 package com.example.quanlycuahang.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -17,4 +18,8 @@ public class Customer {
     private String name;
     private String phone;
     private String address;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore // Prevent infinite recursion during serialization
+    private Set<Order> orders = new HashSet<>();
 }
